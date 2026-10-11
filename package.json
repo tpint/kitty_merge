@@ -3,9 +3,17 @@
   "private": true,
   "description": "Kitty Merge - cat-themed merge game prototype",
   "scripts": {
-    "test": "node tests/check.js"
+    "dev": "vite",
+    "build": "tsc -p . && vite build",
+    "preview": "vite preview",
+    "test": "npm run build && node tests/check.js"
   },
   "devDependencies": {
-    "playwright": "1.64.0"
+    "playwright": "1.64.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
   }
 }
