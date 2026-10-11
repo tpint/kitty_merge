@@ -1,0 +1,11 @@
+{
+  "name": "kitty-merge",
+  "private": true,
+  "description": "Kitty Merge - cat-themed merge game prototype",
+  "scripts": {
+    "test": "node tests/check.js"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
+  }
+}
