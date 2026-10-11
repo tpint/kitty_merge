@@ -336,10 +336,19 @@ export class World extends Phaser.Scene {
       const sc = CATS[c.d.t].scale, dx = wx - c.box.x, dy = wy - c.box.y;
       if (Math.abs(dx) < 55 * sc + 10 && dy < 16 && dy > -150 * sc && c.box.depth > bestDepth) { best = { kind: 'cat', c }; bestDepth = c.box.depth; }
     }
-    if (best) return best;
-    // The item standing on the tile under the finger wins; tall sprites are only hit through empty tiles.
+    // The item standing on the tile under the finger; tall sprites are only hit through empty tiles.
     const under = this.viewAt(tileAt(wx, wy));
-    if (under && under.box.visible) return { kind: 'item', v: under };
+    if (under && under.box.visible) {
+      // A cat walking past an item: pick whichever one's middle is closer to the finger.
+      if (best?.kind === 'cat') {
+        const sc = CATS[best.c.d.t].scale;
+        const catD = Math.hypot(wx - best.c.box.x, wy - (best.c.box.y - 70 * sc));
+        const itemD = Math.hypot(wx - under.box.x, wy - (under.box.y - 30));
+        if (catD < itemD) return best;
+      }
+      return { kind: 'item', v: under };
+    }
+    if (best) return best;
     for (const v of this.items.values()) {
       if (!v.box.visible) continue;
       const dx = wx - v.box.x, dy = wy - v.box.y;

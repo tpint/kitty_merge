@@ -124,6 +124,8 @@ const waitFor = async (page, fn, ms) => { try { await page.waitForFunction(fn, n
       const put = (i, j, c, t, extra = {}) => { s.items[j * 23 + i] = { id: s.nextId++, c, t, ...extra }; };
       put(10, 10, 'nip', 0); put(11, 10, 'nip', 0); put(10, 12, 'nip', 0);
       put(12, 12, 'yarn', 0); put(13, 13, 'fish', 0, { stuck: true });
+      put(8, 9, 'gift', 0); put(9, 8, 'gift', 0); put(12, 11, 'gift', 0);      // screen-horizontal row
+      put(13, 9, 'fish', 0); put(14, 10, 'fish', 0); put(12, 13, 'fish', 0);   // screen-vertical row
       [[10, 10], [11, 10], [12, 10], [13, 10], [12, 9]].forEach(([i, j]) => { s.land[j * 23 + i] = 1; });
       s.cats = [0, 1, 2].map(n => ({ id: s.nextId++, t: 0, x: 9 + n * 0.8, y: 12.6 }));
     });
@@ -147,6 +149,13 @@ const waitFor = async (page, fn, ms) => { try { await page.waitForFunction(fn, n
     await drag(page, idx(12, 12), idx(10, 11));
     s = await save(page);
     check(s.items[idx(10, 11)]?.c === 'yarn' && Object.values(s.items).some(it => it.c === 'nip' && it.t === 1), 'dropping on another item pushes it to a free spot');
+    // 3 in a straight row on screen (tile diagonals) merge too.
+    await drag(page, idx(12, 11), idx(10, 7));
+    s = await save(page);
+    check(s.items[idx(10, 7)]?.c === 'gift' && s.items[idx(10, 7)]?.t === 1 && !s.items[idx(8, 9)] && !s.items[idx(9, 8)], '3 in a horizontal row merge');
+    await drag(page, idx(12, 13), idx(15, 11));
+    s = await save(page);
+    check(s.items[idx(15, 11)]?.c === 'fish' && s.items[idx(15, 11)]?.t === 1 && !s.items[idx(13, 9)] && !s.items[idx(14, 10)], '3 in a vertical row merge');
     // Fog: open cluster costs stars.
     await editSave(page, s => { s.stars = 100; });
     const s1 = await save(page);

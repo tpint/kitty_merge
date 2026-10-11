@@ -9,7 +9,7 @@ Built with [Phaser 3](https://phaser.io/) + TypeScript + Vite. All art is drawn 
 ## How to play
 
 - **The island:** an isometric floating island. Drag empty space to pan; pinch or use the mouse wheel to zoom.
-- **Merge:** drag an item next to matching items. **3 make 1** of the next level; **5 make 2** (the bonus for waiting). Gold tiles show what will merge before you let go. Dropping an item on a different item pushes that item to a free spot.
+- **Merge:** drag an item next to matching items. Items count as touching side by side or corner to corner, so a straight row across or down the screen merges. **3 make 1** of the next level; **5 make 2** (the bonus for waiting). Gold tiles show what will merge before you let go. Dropping an item on a different item pushes that item to a free spot.
 - **Dead land:** the purple cracked ground is cursed. Merging on it heals it to grass. Items found on dead land are **stuck** (darkened) until you merge onto them.
 - **Life Sparks** ✨ 🌟 ☀️: drag them onto dead land to heal an area (bigger sparks heal more).
 - **Cats (the dragons):**
@@ -53,7 +53,7 @@ The first time, also run `npx playwright install chromium`.
 - `src/world.ts`: the Phaser scene: rendering, input (tap / drag / pan / pinch), cats' AI, merging, fog.
 - `src/art.ts`: procedural textures (tiles, cliffs, clouds, cats).
 - `src/hud.ts` + `src/style.css`: the HTML overlay (resources, goals, info card, shop, dialogs).
-- `tests/check.js`: browser test. It covers hatching, harvesting, gifts, coins, Life Sparks, item and cat merges, stuck items, pushing, fog, shop, panning, save/refresh, the win screen and a small-phone layout. Screenshots go to `tests/screenshots/`.
+- `tests/check.js`: browser test. It covers hatching, harvesting, gifts, coins, Life Sparks, item merges (including straight rows), cat merges, stuck items, pushing, fog, shop, panning, save/refresh, the win screen and a small-phone layout. Screenshots go to `tests/screenshots/`.
 
 Pushing to `main` deploys to GitHub Pages through `.github/workflows/pages.yml`.
 
@@ -68,5 +68,6 @@ The game is a standard web build (`dist/`, relative paths), so the path to the a
 
 ## Changelog
 
+- **v0.3:** Fix: 3 items in a straight row across or down the screen now merge (corner-touching tiles count). Cats merge in those rows too. When a cat walks past an item, a tap picks whichever is closer to your finger.
 - **v0.2:** Rebuilt as a *Merge Dragons*-style game: an isometric floating island with pan/zoom, dead land, fog clouds bought with stars, free-roaming cats that harvest and merge, Life Sparks, gifts, push-aside placement, goals, shop and sell. Moved to Phaser + TypeScript + Vite with GitHub Pages auto-deploy.
 - **v0.1:** First prototype (flat 7×9 grid board).

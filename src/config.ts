@@ -1,6 +1,6 @@
 // All balance numbers live here.
 
-export const VERSION = 'v0.2';
+export const VERSION = 'v0.3';
 export const SAVE_KEY = 'kittymerge2';
 
 export const MAP_SIZE = 23;          // island is generated inside a MAP_SIZE x MAP_SIZE grid
@@ -82,7 +82,7 @@ export const CATS: CatLevel[] = [
   { n: 'Lion King',  body: '#e8b04a', dark: '#c98a28', belly: '#fff0c8', eye: '#8a5320', scale: 1.0,  speed: 3.2, mane: '#b5651d', crown: true },
 ];
 export const CAT_WALK_SPEED = 1.8;   // tiles per second for a kitten
-export const CAT_MERGE_RADIUS = 1.4; // cats this close (in tiles) count as a group
+export const CAT_MERGE_RADIUS = 1.6; // cats this close (in tiles) count as a group (covers diagonal neighbours)
 
 export const SELL_VALUE = [1, 2, 5, 12, 25, 50];
 

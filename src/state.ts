@@ -53,11 +53,22 @@ export function neighbors(k: number): number[] {
   return out;
 }
 
-// Connected (4-way) tiles holding the same item as `kind`, BFS from `start` (start first).
+// The 8 tiles around `k`. On the isometric view the tile diagonals are the screen's
+// horizontal and vertical lines, so items in a straight row on screen touch this way.
+export function touching(k: number): number[] {
+  const [i, j] = ij(k), out: number[] = [];
+  for (let dj = -1; dj <= 1; dj++) for (let di = -1; di <= 1; di++) {
+    const a = i + di, b = j + dj;
+    if ((di || dj) && a >= 0 && b >= 0 && a < N && b < N) out.push(idx(a, b));
+  }
+  return out;
+}
+
+// Connected tiles (including diagonals) holding the same item as `kind`, BFS from `start` (start first).
 export function group(s: Save, start: number, kind: { c: string; t: number }, exclude = -1): number[] {
   const seen = new Set([start]), order = [start];
   for (let q = 0; q < order.length; q++)
-    for (const n of neighbors(order[q]))
+    for (const n of touching(order[q]))
       if (!seen.has(n) && n !== exclude && same(s.items[n], kind)) { seen.add(n); order.push(n); }
   return order;
 }
